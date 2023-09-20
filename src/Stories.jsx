@@ -1,23 +1,37 @@
-import React,{ useEffect } from 'react'
-import axios from "axios";
+import React,{ useEffect,useState } from 'react'
+
+import Loader from './Loader';
+
+import { useGlobalContext } from './context';
+import Pagination from './Pagination';
 const Stories = () => {
-    const fetchapi = () =>{
-        const res = axios.get("http://hn.algolia.com/api/v1/search?query=html").then
-        ((res) =>{
-            const data = res.json();
-            console.log("🚀 ~ file: Stories.jsx:8 ~ fetchapi ~ data:", data)
-        }).catch((err) =>{
-            console.log(err,"erropr");
-        }) 
-    }
-    useEffect(() => {
-      fetchapi();
-    
-      
-    }, [])
-    
+  const {query,loading,hits,nbPages,removePost,SearchPost} =useGlobalContext();
+ 
     return (
-    <div>Stories</div>
+
+    <div>
+      
+      <div>
+        <input 
+        type="text"
+        value={query}
+        onChange={(e) => SearchPost(e.target.value)}
+        />
+      </div>
+      <Pagination />
+      {
+        loading === true ? <Loader /> :<div>{
+          hits.map((items) =>{
+            return(
+              <div key={items.objectID} style={{display:"flex",border:"2px solid black", margin:"12px", padding:"2px"}}>
+                <p>{items.title}</p>
+                <button onClick={() => removePost(items.objectID)}>Remove</button>
+              </div>
+            )
+          })
+          } </div>
+      }
+    </div>
   )
 }
 
