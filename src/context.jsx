@@ -9,15 +9,13 @@ const AppContext = createContext();
 const AppProvider = ({children}) =>{
     const [data, setdata] = useState([])
     const initialState ={
-        query: "html",
+        query: "",
         page: 0,
         nbPages:0,
         hits: []
     }
     const [loading,setloading] =useState(true);
     const [states,dispatch] = useReducer(reducer,initialState)
-    const contextValue = 'Hello, World!';
-    const abc = 'Hussain';
     const fetchapi =async () =>{
         
         const res = await axios.get(`http://hn.algolia.com/api/v1/search?query=${states.query}&page=${states.page}`).then
@@ -54,8 +52,18 @@ const AppProvider = ({children}) =>{
             payload: postID
         })
     }
+    const Nextpg = () =>{
+        dispatch({
+            type:"NEXT"
+        })
+    }
+    const Prevpg = () =>{
+        dispatch({
+            type:"PREVIOUS"
+        })
+    }
     return(
-        <AppContext.Provider value={{abc,data,loading,...states,removePost,SearchPost}}>
+        <AppContext.Provider value={{Prevpg,Nextpg,data,loading,...states,removePost,SearchPost}}>
             {children}
             </AppContext.Provider>
     )

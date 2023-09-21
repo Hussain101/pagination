@@ -1,13 +1,14 @@
 
 import './App.css';
-import Spin from './Spin';
+
 import Stories from './Stories';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App ">
+      
       <Stories />
-      {/* <Spin /> */}
+      
     </div>
   );
 }
